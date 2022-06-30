@@ -1,0 +1,42 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "private",
+  "signedByOrg": "lucasdsmdev",
+  "signedByOrgName": "lucasdsmdev",
+  "rootUrls": [
+    "http://localhost:3000/",
+    "http://localhost:5000/"
+  ],
+  "plugin": "lucasdsmdev-horus-datasource",
+  "version": "1.0.0",
+  "time": 1656588908834,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "certutil": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "CHANGELOG.md": "65b243d61e410b055ad3984a979fee25df47b24529bc2bcb35b8d95ca3dbd550",
+    "img/logo.png": "814c93a4426950d52e4802200794e781badef6ee8a0cea73d55d38efe5695d14",
+    "img/logo.svg": "1defc6f7e585c67657bcfd8fddc599ee7dfa82f8674413f49fa274c2cd453ec6",
+    "img/ServerIcon.png": "814c93a4426950d52e4802200794e781badef6ee8a0cea73d55d38efe5695d14",
+    "LICENSE": "e03ba41d7fab20700769fe4118bab50d800cb74f990353a05d2f5fff1c228363",
+    "module.js": "8f23d81558787283ae35a9041217ec9353e2086717c5142b7cfe0a10ed7dfc2f",
+    "module.js.LICENSE.txt": "cdf963ced7d25a0f98901a547647b4d6e2dbe0197fd78c87a059a87b0e542fe2",
+    "module.js.map": "b7f642424b7c2d885292ee16027e1bbf274bc2e9cc2bcf284f568fea251def38",
+    "plugin.json": "d5d567b91cd91b8dcf2413d8683255fbbba6af42b38b1734d4a9e50302ba3ce6",
+    "README.md": "43298084d2335549850362e0e32207209c9985e81ea5cce8a69dfc95fe8791b1"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.10
+Comment: https://openpgpjs.org
+
+wrcEARMKAAYFAmK9im0AIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm5z6JAgY2GUIlzyZ0Mj9me0kWb/kg4yQGibCETHI5yWUlWx5D8Wcy68+p
+kV62kDnlfFY5JpDvJHhqIHiaNc4ewIAsj11r3gIGPS8e8S/x3moH9eapE3dh
+TWbcjJ1s/JVj+IC2GfhtKdAbY9A/WZ/gGeRYdZ2Y7T09H87z1keEGPYYFK38
+nFZyVi8=
+=U/ut
+-----END PGP SIGNATURE-----
