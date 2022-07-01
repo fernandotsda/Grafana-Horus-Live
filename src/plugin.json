@@ -2,16 +2,19 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Horus Live",
-  "id": "lucasdsmdev-horus-datasource",
+  "id": "tsda-horuslive-datasource",
   "streaming": true,
   "metrics": true,
   "info": {
     "description": "",
     "author": {
       "name": "Tsda",
-      "url": ""
+      "url": "https://tsda.com.br"
     },
-    "keywords": [],
+    "keywords": [
+      "tsda",
+      "flex"
+    ],
     "logos": {
       "small": "img/logo.png",
       "large": "img/logo.png"
@@ -19,19 +22,15 @@
     "links": [
       {
         "name": "Website",
-        "url": "https://github.com/grafana/grafana-starter-datasource"
-      },
-      {
-        "name": "License",
-        "url": "https://github.com/grafana/grafana-starter-datasource/blob/master/LICENSE"
+        "url": "https://tsda.com.br"
       }
     ],
     "screenshots": [],
-    "version": "%VERSION%",
-    "updated": "%TODAY%"
+    "version": "1.0.1",
+    "updated": "2022-07-01"
   },
   "dependencies": {
-    "grafanaDependency": ">=7.0.0",
+    "grafanaDependency": ">=9.0.2",
     "plugins": []
   }
 }
