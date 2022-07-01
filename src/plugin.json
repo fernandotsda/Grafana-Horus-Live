@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Horus Live",
-  "id": "tsda-horuslive-datasource",
+  "id": "tsdadev-horuslive-datasource",
   "streaming": true,
   "metrics": true,
   "info": {
