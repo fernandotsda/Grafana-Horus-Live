@@ -18,7 +18,7 @@ export interface HorusQuery extends DataQuery {
   headers: Array<Pair<string, string>>;
   body: string;
   keepdata: boolean;
-  skipper: boolean;
+  strict: boolean;
   capacity: number;
 }
 
@@ -30,7 +30,7 @@ export const defaultQuery: Partial<HorusQuery> = {
   capacity: 1000,
   urlPath: '',
   keepdata: true,
-  skipper: true,
+  strict: true,
 };
 
 export interface HorusDataSourceOptions extends DataSourceJsonData {

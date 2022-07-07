@@ -55,8 +55,8 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     onRunQuery();
   };
 
-  const onSkipperChange = (skipper: boolean) => {
-    onChange({ ...q, skipper: skipper });
+  const onStrictChange = (strict: boolean) => {
+    onChange({ ...q, strict: strict });
     onRunQuery();
   };
 
@@ -93,8 +93,8 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
       onIntervalChange={onIntervalChange} 
       keepdata={q.keepdata}
       onKeepdataChange={onKeepdataChange}
-      skipper={q.skipper}
-      onSkipperChange={onSkipperChange}
+      strict={q.strict}
+      onStrictChange={onStrictChange}
       onCapacityBlur={onCapacityBlur}
       onIntervalBlur={onIntervalBlur}
       />)

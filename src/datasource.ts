@@ -14,6 +14,7 @@ import { request } from './request';
 import { JSONPath } from 'jsonpath-plus';
 import { parseValues } from './parseValues';
 import { DataHistory } from './dataHistory';
+import { QueryResponseHandler } from './queryResponse';
 
 export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<HorusDataSourceOptions>) {
@@ -45,22 +46,22 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
           frame.addField({ name: field.name ?? '', type: field.type });
         });
 
-        // Config
-        const nextConf = {
+        // Inicialize subscribe config
+        const queryRes = new QueryResponseHandler({
           data: [frame],
           key: query.refId,
-          state: LoadingState.Streaming,
-        };
+          state: LoadingState.NotStarted,
+        });
 
         // Inject data to frame
-        this.dataHistory.Inject(frame);
+        this.dataHistory.InjectTo(frame);
 
         const func = async () => {
           let res: any;
           try {
             res = await request(query);
-          } catch {
-            return;
+          } catch (err) {
+            return subscriber.error(err);
           }
 
           // Frame field
@@ -90,8 +91,8 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
           });
 
           // Skip if has undefined data
-          if (hasEmptyData && query.skipper) {
-            return subscriber.next(nextConf);
+          if (hasEmptyData && query.strict) {
+            return subscriber.error('No data for fields');
           }
 
           // Add field to frame
@@ -101,15 +102,13 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
           this.dataHistory.Push(frameFields);
 
           // Call next
-          subscriber.next(nextConf);
+          subscriber.next(queryRes.State(LoadingState.Streaming));
         };
 
-        let intervalId: any = () => {};
         // Execute manually the function to not wait the
         // interval timeout, and then set the interval.
-        func().finally(() => {
-          intervalId = setInterval(func, query.interval);
-        });
+        func();
+        const intervalId = setInterval(func, query.interval);
 
         return () => {
           clearInterval(intervalId);

@@ -14,8 +14,8 @@ export async function request(query: HorusQuery): Promise<any> {
     method: query.method,
   };
 
-  // Create URL
-  const url = new URL(query.urlPath);
+  const url = CreateURL(query.urlPath);
+  if (!url) {throw new Error('Invalid URL');}
 
   // Add params
   query.params?.forEach((pair) => {
@@ -23,19 +23,23 @@ export async function request(query: HorusQuery): Promise<any> {
   });
 
   // Make request
-  let res: any;
-  try {
-    res = await fetch(url.toString(), requestInit);
-  } catch (err) {
-    throw new Error('Fail to make request');
-  }
+  const res = await fetch(url.toString(), requestInit).catch(() => {
+    throw new Error('Fail to fetch');
+  });
+
+  // Check if request has error code
+  if (!res.ok) {throw new Error('Request failed. ' + res.statusText);}
 
   // Parse response
-  let bodyRes: any;
+  return await res.json().catch(() => {
+    throw new Error('Fail to read response');
+  });
+}
+
+function CreateURL(addr: string): URL | undefined {
   try {
-    bodyRes = await res.json();
-  } catch (err) {
-    throw new Error('An error occured while reading request response');
+    return new URL(addr);
+  } catch {
+    return undefined;
   }
-  return bodyRes;
 }

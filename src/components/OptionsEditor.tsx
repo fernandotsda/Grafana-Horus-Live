@@ -12,14 +12,14 @@ interface Props {
   keepdata: boolean
   onKeepdataChange: (keepdata: boolean) => void;
 
-  skipper: boolean
-  onSkipperChange: (keepdata: boolean) => void;
+  strict: boolean
+  onStrictChange: (keepdata: boolean) => void;
 
   onCapacityBlur: () => void
   onIntervalBlur: () => void
 }
 
-export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdataChange, capacity, onCapacityChange, skipper, onSkipperChange, onCapacityBlur, onIntervalBlur}: Props) => {
+export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdataChange, capacity, onCapacityChange, strict, onStrictChange, onCapacityBlur, onIntervalBlur}: Props) => {
   return (
     <InlineFieldRow>
       <InlineField  label="Interval" tooltip="Interval between each request (miliseconds).">
@@ -31,8 +31,8 @@ export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdata
       <InlineSwitch marginWidth={2} label="Keep Data" showLabel={true} defaultChecked={keepdata
       } onChange={(e) => onKeepdataChange(e.currentTarget.checked)}>
       </InlineSwitch>
-      <InlineSwitch className={css`margin-left:4px`} label="Skipper" showLabel={true} defaultChecked={skipper
-      } onChange={(e) => onSkipperChange(e.currentTarget.checked)}>
+      <InlineSwitch className={css`margin-left:4px`} label="Strict" showLabel={true} defaultChecked={strict
+      } onChange={(e) => onStrictChange(e.currentTarget.checked)}>
       </InlineSwitch>
     </InlineFieldRow>
   );

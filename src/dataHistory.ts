@@ -17,7 +17,7 @@ export class DataHistory {
    * the history data will be cleared.
    * @param frame The frame that will receive the data.
    */
-  Inject(frame: CircularDataFrame<any>): void {
+  InjectTo(frame: CircularDataFrame<any>): void {
     // Check if keep data is enabled
     if (!this.query.keepdata) {
       // Clear data
