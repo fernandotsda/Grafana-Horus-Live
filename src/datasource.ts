@@ -70,13 +70,20 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
 
           // Spread fields value into frame field
           query.fields.map((field) => {
-            const data = parseValues(
-              JSONPath({
-                path: field.jsonPath,
-                json: res ?? '',
-              }),
-              field.type ?? FieldType.string
-            )[0];
+            let data: any;
+
+            try {
+              data = parseValues(
+                JSONPath({
+                  path: field.jsonPath,
+                  json: res ?? '',
+                }),
+                field.type ?? FieldType.string
+              )[0];
+            } catch {
+              subscriber.error('Unsupported field type');
+              return;
+            }
 
             if (data === undefined) {
               hasEmptyData = true;
