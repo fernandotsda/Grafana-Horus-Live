@@ -32,11 +32,8 @@ export class DataHistory {
     if (startIndex < 0) {
       startIndex = 0;
     }
-    console.log(dataLenght);
     // Inject the last values
     for (let i = startIndex; i < dataLenght; i++) {
-      console.log(i);
-
       try {
         AddDataToQueryFrame(frame, query, this.data[i]);
       } catch {} // Just skip fails
