@@ -15,7 +15,10 @@ export async function request(query: HorusQuery): Promise<any> {
   };
 
   const url = CreateURL(query.urlPath);
-  if (!url) {throw new Error('Invalid URL');}
+
+  if (!url) {
+    throw new Error('Invalid URL');
+  }
 
   // Add params
   query.params?.forEach((pair) => {
@@ -28,7 +31,9 @@ export async function request(query: HorusQuery): Promise<any> {
   });
 
   // Check if request has error code
-  if (!res.ok) {throw new Error('Request failed. ' + res.statusText);}
+  if (!res.ok) {
+    throw new Error('Request failed. ' + res.statusText);
+  }
 
   // Parse response
   return await res.json().catch(() => {

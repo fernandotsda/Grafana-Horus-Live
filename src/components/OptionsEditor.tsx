@@ -9,6 +9,9 @@ interface Props {
   capacity: number;
   onCapacityChange: (interval: number) => void;
 
+  groupID: string;
+  onGroupIDChange: (groupID: string) => void;
+
   keepdata: boolean
   onKeepdataChange: (keepdata: boolean) => void;
 
@@ -17,12 +20,14 @@ interface Props {
 
   onCapacityBlur: () => void
   onIntervalBlur: () => void
+  onGroupIDBlur:  () => void
 }
 
-export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdataChange, capacity, onCapacityChange, strict, onStrictChange, onCapacityBlur, onIntervalBlur}: Props) => {
+export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdataChange, capacity, onCapacityChange, groupID, onGroupIDBlur, onGroupIDChange, strict, onStrictChange, onCapacityBlur, onIntervalBlur}: Props) => {
   return (
+    <>
     <InlineFieldRow>
-      <InlineField  label="Interval" tooltip="Interval between each request (miliseconds).">
+      <InlineField  label="Interval" tooltip="Interval between each request (milliseconds).">
       <Input onBlur={onIntervalBlur} placeholder={interval.toString()} value={interval} onChange={(e) => onIntervalChange(Number(e.currentTarget.value))} />
       </InlineField>
       <InlineField label="Capacity" tooltip="Maximum numbers of frames the query can hold. If keep data is enabled, the data persists on query refresh.">
@@ -35,5 +40,11 @@ export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdata
       } onChange={(e) => onStrictChange(e.currentTarget.checked)}>
       </InlineSwitch>
     </InlineFieldRow>
+    <InlineFieldRow>
+    <InlineField  label="Group ID" tooltip="If more than one query use the same route to get the same response, the Group ID can be used to share the result, it also share the same data history internaly. But if the query result is unic for the query, leave it empty. Be aware that this function can cause bugs if the multiple querys are not configurate the same ways ('Fields' tab does not have effects).,">
+      <Input width={15} onBlur={onGroupIDBlur} placeholder={groupID} value={groupID} onChange={(e) => onGroupIDChange(e.currentTarget.value)} />
+      </InlineField>
+    </InlineFieldRow>
+  </>
   );
 };

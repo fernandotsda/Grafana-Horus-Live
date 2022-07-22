@@ -1,56 +1,59 @@
 import { CircularDataFrame } from '@grafana/data';
+import { AddDataToQueryFrame } from './dataHandler';
 import { HorusQuery } from './types';
 
 export class DataHistory {
-  private _data: any[];
-  query: HorusQuery;
+  readonly id: string;
+  private capacity: number;
+  private data: any[] = [];
 
-  constructor(query: HorusQuery) {
-    this.query = query;
-    this._data = [];
+  constructor(id: string, capacity: number) {
+    this.id = id;
+    this.capacity = capacity;
   }
 
   /**
-   * Inject data to the frame if query keep data is enabled.
    * If history data is bigger than the query capacity, the
    * old data will be discarted. If keep data is disabled,
    * the history data will be cleared.
    * @param frame The frame that will receive the data.
    */
-  InjectTo(frame: CircularDataFrame<any>): void {
-    // Check if keep data is enabled
-    if (!this.query.keepdata) {
-      // Clear data
-      this._data = [];
-      return;
-    }
-
+  InjectTo(frame: CircularDataFrame<any>, query: HorusQuery): void {
     // Check if data exceeds the query capacity
-    if (this.query.capacity < this._data.length) {
-      const count = this._data.length - this.query.capacity;
-      this._data.splice(0, count);
+    if (this.capacity < this.data.length) {
+      const count = this.data.length - this.capacity;
+      this.data.splice(0, count);
     }
 
-    // Add frames
-    this._data.map((d) => frame.add(d));
+    const dataLenght = this.data.length;
+
+    // Get the startIndex
+    let startIndex = dataLenght - query.capacity;
+    if (startIndex < 0) {
+      startIndex = 0;
+    }
+    console.log(dataLenght);
+    // Inject the last values
+    for (let i = startIndex; i < dataLenght; i++) {
+      console.log(i);
+
+      try {
+        AddDataToQueryFrame(frame, query, this.data[i]);
+      } catch {} // Just skip fails
+    }
   }
 
   /**
    * Add data to history. If the current history is bigger
    * the the query capacity, the oldest data will be discarted.
-   * If keep data is disabled, the data will be ignored.
    * @param data The data.
    */
   Push(data: any) {
-    // Check if keep data is desabled
-    if (!this.query.keepdata) {
-      return;
-    }
-    this._data.push(data);
+    this.data.push(data);
 
     // Check if data has reached the maximum capacity
-    if (this._data.length > this.query.capacity) {
-      this._data.shift();
+    if (this.data.length > this.capacity) {
+      this.data.shift();
     }
   }
 }

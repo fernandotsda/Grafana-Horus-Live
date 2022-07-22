@@ -18,19 +18,21 @@ export interface HorusQuery extends DataQuery {
   headers: Array<Pair<string, string>>;
   body: string;
   keepdata: boolean;
+  dataGroupId: string;
   strict: boolean;
   capacity: number;
 }
 
 export const defaultQuery: Partial<HorusQuery> = {
   fields: [{ jsonPath: '', type: FieldType.string }],
-  method: 'GET',
+  method: 'POST',
   queryParams: '',
-  interval: 1000,
-  capacity: 1000,
+  interval: 2000,
+  capacity: 50,
   urlPath: '',
-  keepdata: true,
+  keepdata: false,
   strict: true,
+  dataGroupId: '',
 };
 
 export interface HorusDataSourceOptions extends DataSourceJsonData {

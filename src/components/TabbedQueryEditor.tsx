@@ -50,6 +50,10 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     onChange({ ...q, capacity: capacity });
   };
 
+  const onGroupIDChange = (groupID: string) => {
+    onChange({ ...q, dataGroupId: groupID });
+  };
+
   const onKeepdataChange = (keepdata: boolean) => {
     onChange({ ...q, keepdata });
     onRunQuery();
@@ -72,6 +76,10 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     onRunQuery()
   }
 
+  const onGroupIDBlur = () => {
+    onRunQuery()
+  }
+
   const onIntervalBlur = () => {
     if (q.interval < 200) {
       q.interval = 200
@@ -87,6 +95,9 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     {
       title: 'Options',
       content: (<OptionsEditor 
+      groupID={q.dataGroupId}
+      onGroupIDBlur={onGroupIDBlur}
+      onGroupIDChange={onGroupIDChange}
       capacity={q.capacity}
       onCapacityChange={onCapacityChange}
       interval={q.interval}

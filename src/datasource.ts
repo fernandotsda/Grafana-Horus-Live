@@ -1,5 +1,6 @@
 import defaults from 'lodash/defaults';
 import { Observable, merge } from 'rxjs';
+import clone from 'just-clone';
 import {
   DataQueryRequest,
   DataQueryResponse,
@@ -7,30 +8,34 @@ import {
   DataSourceInstanceSettings,
   LoadingState,
   CircularDataFrame,
-  FieldType,
 } from '@grafana/data';
 import { HorusQuery, HorusDataSourceOptions, defaultQuery } from './types';
-import { request } from './request';
-import { JSONPath } from 'jsonpath-plus';
-import { parseValues } from './parseValues';
-import { DataHistory } from './dataHistory';
 import { QueryResponseHandler } from './queryResponse';
+import { DataController } from './dataController';
+import { AddDataToQueryFrame } from './dataHandler';
+import shortUUID from 'short-uuid';
+import { Newloop as NewLoop } from './looper';
 
 export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<HorusDataSourceOptions>) {
     super(instanceSettings);
-    this.dataHistory = new DataHistory(defaultQuery as HorusQuery);
+    this.dataController = new DataController();
   }
 
-  private dataHistory: DataHistory;
+  private dataController: DataController;
 
   query(options: DataQueryRequest<HorusQuery>): Observable<DataQueryResponse> {
     const streams = options.targets.map((target) => {
       // Get query
       const query = defaults(target, defaultQuery);
 
-      // Set new query to data history
-      this.dataHistory.query = query;
+      // Create unic groupID
+      if (query.dataGroupId.length === 0) {
+        query.dataGroupId = shortUUID.generate().toString();
+      }
+
+      // Get data history
+      const dataHistory = this.dataController.Get(query);
 
       // Inicialize and return Observable
       return new Observable<DataQueryResponse>((subscriber) => {
@@ -54,72 +59,46 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
         });
 
         // Inject data to frame
-        this.dataHistory.InjectTo(frame);
+        if (query.keepdata) {
+          dataHistory.InjectTo(frame, query);
+        }
 
         const func = async () => {
           let res: any;
+          let error = false;
+
+          // Make fetch
           try {
-            res = await request(query);
-          } catch (err) {
-            return subscriber.error(err);
-          }
-
-          // Frame field
-          let frameFields = {};
-          let hasEmptyData = false;
-
-          // Spread fields value into frame field
-          query.fields.map((field) => {
-            let data: any;
-
-            try {
-              data = parseValues(
-                JSONPath({
-                  path: field.jsonPath,
-                  json: res ?? '',
-                }),
-                field.type ?? FieldType.string
-              )[0];
-            } catch {
-              subscriber.error('Unsupported field type');
+            // Wait and clone response
+            res = clone(await this.dataController.Request(query));
+          } catch (e) {
+            subscriber.error(e);
+            error = true;
+          } finally {
+            // Clear request
+            this.dataController.ClearRequest(query);
+            if (error) {
               return;
             }
-
-            if (data === undefined) {
-              hasEmptyData = true;
-            }
-
-            // Merge fields
-            frameFields = {
-              ...frameFields,
-              // Add new field value
-              [field.name ?? '']: data, // Get only the first value
-            };
-          });
-
-          // Skip if has undefined data
-          if (hasEmptyData && query.strict) {
-            return subscriber.error('No data for fields');
           }
 
-          // Add field to frame
-          frame.add(frameFields);
+          // Add data to frame
+          try {
+            AddDataToQueryFrame(frame, query, res);
+          } catch (e) {
+            subscriber.error(e);
+          }
 
-          // Add to history
-          this.dataHistory.Push(frameFields);
+          // Add data to history
+          if (query.keepdata) {
+            dataHistory.Push(res);
+          }
 
-          // Call next
+          // Call next handler
           subscriber.next(queryRes.State(LoadingState.Streaming));
         };
 
-        // Execute manually the function to not wait the
-        // interval timeout, and then set the interval.
-        func();
-        const intervalId = setInterval(func, query.interval);
-
-        return () => {
-          clearInterval(intervalId);
-        };
+        return NewLoop(func, query.interval);
       });
     });
 

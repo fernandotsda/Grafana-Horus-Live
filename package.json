@@ -27,6 +27,8 @@
   "dependencies": {
     "@grafana/runtime": "^9.0.2",
     "dayjs": "^1.11.3",
-    "jsonpath-plus": "^7.0.0"
+    "jsonpath-plus": "^7.0.0",
+    "just-clone": "^6.0.1",
+    "short-uuid": "^4.2.0"
   }
 }
