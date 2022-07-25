@@ -3,7 +3,9 @@ import { sleep } from './dataHandler';
 const curloops: Loop[] = [];
 
 /**
- *
+ * Creates a new async function loop, the function
+ * will be called after the preview call and the
+ * timeout finished
  * @param fn The function that will be executed
  * @param interval The inteval between each call
  * @returns The function to stop de loop
@@ -15,6 +17,7 @@ export function Newloop(fn: () => Promise<any>, interval: number): () => void {
   // Save loop
   curloops.push(loop);
 
+  // Return the cancel loop function
   return () => (loop.stop = true);
 }
 

@@ -124,6 +124,9 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
           }}
           path={q.urlPath ?? ''}
           onPathChange={(path) => {
+            if (path.length > 0 && path[0] !== '/') {
+              path = '/' + path
+            }
             onChange({ ...q, urlPath: path });
           }}
         />

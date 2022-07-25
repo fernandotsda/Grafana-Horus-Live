@@ -1,4 +1,4 @@
-define(["@emotion/css","@grafana/data","@grafana/ui","emotion","react","rxjs"], (__WEBPACK_EXTERNAL_MODULE__emotion_css__, __WEBPACK_EXTERNAL_MODULE__grafana_data__, __WEBPACK_EXTERNAL_MODULE__grafana_ui__, __WEBPACK_EXTERNAL_MODULE_emotion__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_rxjs__) => { return /******/ (() => { // webpackBootstrap
+define(["@emotion/css","@grafana/data","@grafana/ui","emotion","lodash","react","rxjs"], (__WEBPACK_EXTERNAL_MODULE__emotion_css__, __WEBPACK_EXTERNAL_MODULE__grafana_data__, __WEBPACK_EXTERNAL_MODULE__grafana_ui__, __WEBPACK_EXTERNAL_MODULE_emotion__, __WEBPACK_EXTERNAL_MODULE_lodash__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_rxjs__) => { return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "../node_modules/any-base/index.js":
@@ -141,18 +141,116 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ConfigEditor": () => (/* binding */ ConfigEditor)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _KeyValueEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./KeyValueEditor */ "./components/KeyValueEditor.tsx");
+var _h;
+
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
 
 
 /**
- * ConfigEditor lets the user configure connection details like the URL or
- * authentication.
+ * ConfigEditor allow configure the default query options. 
  */
 var ConfigEditor = function ConfigEditor(_ref) {
+  var _options$jsonData$def;
+
   var options = _ref.options,
       onOptionsChange = _ref.onOptionsChange;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null);
+
+  var onCapacityChange = function onCapacityChange(e) {
+    // Parse capacity
+    var capacity = Number(e.currentTarget.value);
+    onOptionsChange(_extends({}, options, {
+      jsonData: _extends({}, options.jsonData, {
+        dataHistoryCapacity: capacity
+      })
+    }));
+  };
+
+  var onCapacityBlur = function onCapacityBlur() {
+    var capacity = options.jsonData.dataHistoryCapacity; // Check if is Nan or less than 1
+
+    if ((0,lodash__WEBPACK_IMPORTED_MODULE_1__.isNaN)(capacity) || capacity <= 1) {
+      capacity = 2000;
+    }
+
+    onOptionsChange(_extends({}, options, {
+      jsonData: _extends({}, options.jsonData, {
+        dataHistoryCapacity: capacity
+      })
+    }));
+  };
+
+  var onDefaultURLChange = function onDefaultURLChange(e) {
+    onOptionsChange(_extends({}, options, {
+      jsonData: _extends({}, options.jsonData, {
+        defaultUrl: e.currentTarget.value
+      })
+    }));
+  };
+
+  var onDefaultURLBlur = function onDefaultURLBlur() {
+    var url = options.jsonData.defaultUrl; // Check if url ends with one or more '/'
+
+    var removeLastChar = function removeLastChar() {
+      if (url.charAt(url.length - 1) === '/') {
+        url = url.slice(0, -1);
+        removeLastChar();
+      }
+    };
+
+    removeLastChar();
+    onOptionsChange(_extends({}, options, {
+      jsonData: _extends({}, options.jsonData, {
+        defaultUrl: url
+      })
+    }));
+  };
+
+  var onHeadersChange = function onHeadersChange(pairs) {
+    onOptionsChange(_extends({}, options, {
+      jsonData: _extends({}, options.jsonData, {
+        defaultHeaders: pairs
+      })
+    }));
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement((react__WEBPACK_IMPORTED_MODULE_2___default().Fragment), null, _h || (_h = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h3", {
+    className: "page-heading"
+  }, "Query settings")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.InlineFieldRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.InlineField, {
+    label: "Default URL"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.Input, {
+    width: 60,
+    value: options.jsonData.defaultUrl,
+    placeholder: "http://localhost:8080",
+    onChange: onDefaultURLChange,
+    onBlur: onDefaultURLBlur
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.InlineFieldRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.InlineField, {
+    label: "Data History Capacity",
+    tooltip: "Data history capacity of a query group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.Input, {
+    width: 50,
+    value: options.jsonData.dataHistoryCapacity,
+    onChange: onCapacityChange,
+    spellCheck: false,
+    onBlur: onCapacityBlur,
+    placeholder: "2000"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_KeyValueEditor__WEBPACK_IMPORTED_MODULE_3__.KeyValueEditor, {
+    addRowLabel: "Add header",
+    columns: ["Name", "Value"],
+    values: (_options$jsonData$def = options.jsonData.defaultHeaders) !== null && _options$jsonData$def !== void 0 ? _options$jsonData$def : [],
+    onBlur: function onBlur() {},
+    onChange: onHeadersChange
+  }));
 };
 
 /***/ }),
@@ -643,6 +741,7 @@ var PathEditor = function PathEditor(_ref) {
     grow: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_0__.Input, {
     placeholder: "/orders/${orderId}",
+    spellCheck: false,
     value: path,
     onBlur: onBlur,
     onChange: function onChange(e) {
@@ -888,6 +987,10 @@ var TabbedQueryEditor = function TabbedQueryEditor(_ref) {
       },
       path: (_q$urlPath = q.urlPath) !== null && _q$urlPath !== void 0 ? _q$urlPath : '',
       onPathChange: function onPathChange(path) {
+        if (path.length > 0 && path[0] !== '/') {
+          path = '/' + path;
+        }
+
         onChange(_extends({}, q, {
           urlPath: path
         }));
@@ -984,25 +1087,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var DataController = /*#__PURE__*/function () {
-  function DataController() {
+  /**
+   * Set the data capacity and data source options
+   */
+  function DataController(options) {
     _classCallCheck(this, DataController);
 
     _defineProperty(this, "history", []);
 
     _defineProperty(this, "dataRequests", []);
+
+    _defineProperty(this, "dataSourceOptions", void 0);
+
+    this.dataSourceOptions = options;
   }
+  /**
+   * Throws an error if query dataHistoryId is empty or undefined.
+   * Try to find an existent DataHistory, if doesn't exist, creates
+   * a new one.
+   * @param query The current query
+   * @returns A DataHistory
+   */
+
 
   _createClass(DataController, [{
     key: "Get",
-    value:
-    /**
-     * Throws an error if query dataHistoryId is empty or undefined.
-     * Try to find an existent DataHistory, if doesn't exist, creates
-     * a new one.
-     * @param query The current query
-     * @returns A DataHistory
-     */
-    function Get(query) {
+    value: function Get(query) {
       var id = query.dataGroupId; // Check if query id is empty
 
       if (id === undefined || id.length === 0) {
@@ -1013,7 +1123,7 @@ var DataController = /*#__PURE__*/function () {
       var q = this.Find(id);
 
       if (!q) {
-        q = new _dataHistory__WEBPACK_IMPORTED_MODULE_0__.DataHistory(id, 2000);
+        q = new _dataHistory__WEBPACK_IMPORTED_MODULE_0__.DataHistory(id, this.dataSourceOptions.jsonData.dataHistoryCapacity);
         this.history.push(q);
       }
 
@@ -1032,12 +1142,18 @@ var DataController = /*#__PURE__*/function () {
         return h.id === id;
       });
     }
+    /**
+     * Make the query request, if a request is pending will just wait the result of this one
+     * @param query The query
+     * @returns
+     */
+
   }, {
     key: "Request",
     value: function Request(query) {
       var r = this.dataRequests.find(function (r) {
         return r.groupId === query.dataGroupId;
-      }); // Check if not registered
+      }); // Check if is no request wrapper exist for this data group
 
       if (r === undefined) {
         r = {
@@ -1045,15 +1161,20 @@ var DataController = /*#__PURE__*/function () {
           request: undefined
         };
         this.dataRequests.push(r);
-      } // Make request if there's no request happening
+      } // Make request if there's no request pending
 
 
       if (r.request === undefined) {
-        r.request = (0,_request__WEBPACK_IMPORTED_MODULE_1__.request)(query);
+        r.request = (0,_request__WEBPACK_IMPORTED_MODULE_1__.request)(query, this.dataSourceOptions);
       }
 
       return r.request;
     }
+    /**
+     * Clear the current request to be able to send new ones
+     * @param query The query who wants to
+     */
+
   }, {
     key: "ClearRequest",
     value: function ClearRequest(query) {
@@ -1105,6 +1226,13 @@ var sleep = function sleep(ms) {
     return setTimeout(r, ms);
   });
 };
+/**
+ * Parse data according to the field type
+ * @param data The data to be parsed
+ * @param field The field with the conditions
+ * @returns The data parsed
+ */
+
 function HandleDataForField(data, field) {
   var result;
 
@@ -1121,11 +1249,26 @@ function HandleDataForField(data, field) {
 
   return result;
 }
+/**
+ * Add data to an especific field of an frame field
+ * @param frameFields The frame field
+ * @param data The data taht will be injected
+ * @param field The target
+ * @returns The framefields with the new data injected
+ */
+
 function AddFrameField(frameFields, data, field) {
   var _field$name;
 
   return _extends({}, frameFields, _defineProperty({}, (_field$name = field.name) !== null && _field$name !== void 0 ? _field$name : '', data));
 }
+/**
+ * Add data to frame according to it's json fields
+ * @param frame Frame target
+ * @param query The current query
+ * @param rawData Raw data
+ */
+
 function AddDataToQueryFrame(frame, query, rawData) {
   var hasEmptyData = false;
   var frameFields = {}; // Spread fields value into frame field
@@ -1208,13 +1351,10 @@ var DataHistory = /*#__PURE__*/function () {
 
       if (startIndex < 0) {
         startIndex = 0;
-      }
+      } // Inject the last values
 
-      console.log(dataLenght); // Inject the last values
 
       for (var i = startIndex; i < dataLenght; i++) {
-        console.log(i);
-
         try {
           (0,_dataHandler__WEBPACK_IMPORTED_MODULE_0__.AddDataToQueryFrame)(frame, query, this.data[i]);
         } catch (_unused) {} // Just skip fails
@@ -1334,7 +1474,7 @@ var DataSource = /*#__PURE__*/function (_DataSourceApi) {
 
     _defineProperty(_assertThisInitialized(_this), "dataController", void 0);
 
-    _this.dataController = new _dataController__WEBPACK_IMPORTED_MODULE_6__.DataController();
+    _this.dataController = new _dataController__WEBPACK_IMPORTED_MODULE_6__.DataController(instanceSettings);
     return _this;
   }
 
@@ -1523,7 +1663,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var curloops = [];
 /**
- *
+ * Creates a new async function loop, the function
+ * will be called after the preview call and the
+ * timeout finished
  * @param fn The function that will be executed
  * @param interval The inteval between each call
  * @returns The function to stop de loop
@@ -1533,7 +1675,8 @@ function Newloop(fn, interval) {
   // Create loop
   var loop = new Loop(fn, interval); // Save loop
 
-  curloops.push(loop);
+  curloops.push(loop); // Return the cancel loop function
+
   return function () {
     return loop.stop = true;
   };
@@ -1779,13 +1922,13 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function request(_x) {
+function request(_x, _x2) {
   return _request.apply(this, arguments);
 }
 
 function _request() {
-  _request = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-    var _query$headers, _query$params;
+  _request = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query, options) {
+    var _options$jsonData$def, _query$headers, _query$params;
 
     var headers, requestInit, url, res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -1794,7 +1937,12 @@ function _request() {
           case 0:
             // Add headers
             headers = new Headers();
-            (_query$headers = query.headers) === null || _query$headers === void 0 ? void 0 : _query$headers.map(function (h) {
+            (_options$jsonData$def = options.jsonData.defaultHeaders // Append default headers
+            ) === null || _options$jsonData$def === void 0 ? void 0 : _options$jsonData$def.map(function (h) {
+              headers.append(h[0], h[1]);
+            });
+            (_query$headers = query.headers // Append query headers
+            ) === null || _query$headers === void 0 ? void 0 : _query$headers.map(function (h) {
               headers.append(h[0], h[1]);
             }); // Request init
 
@@ -1803,16 +1951,16 @@ function _request() {
               headers: headers,
               method: query.method
             };
-            url = CreateURL(query.urlPath);
+            url = CreateURL(options.jsonData.defaultUrl + query.urlPath);
 
             if (url) {
-              _context.next = 6;
+              _context.next = 7;
               break;
             }
 
             throw new Error('Invalid URL');
 
-          case 6:
+          case 7:
             // Add params
             (_query$params = query.params) === null || _query$params === void 0 ? void 0 : _query$params.forEach(function (pair) {
               var _pair$, _pair$2;
@@ -1820,31 +1968,31 @@ function _request() {
               url.searchParams.append((_pair$ = pair[0]) !== null && _pair$ !== void 0 ? _pair$ : '', (_pair$2 = pair[1]) !== null && _pair$2 !== void 0 ? _pair$2 : '');
             }); // Make request
 
-            _context.next = 9;
+            _context.next = 10;
             return fetch(url.toString(), requestInit)["catch"](function () {
               throw new Error('Fail to fetch');
             });
 
-          case 9:
+          case 10:
             res = _context.sent;
 
             if (res.ok) {
-              _context.next = 12;
+              _context.next = 13;
               break;
             }
 
             throw new Error('Request failed. ' + res.statusText);
 
-          case 12:
-            _context.next = 14;
+          case 13:
+            _context.next = 15;
             return res.json()["catch"](function () {
               throw new Error('Fail to read response');
             });
 
-          case 14:
+          case 15:
             return _context.abrupt("return", _context.sent);
 
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }
@@ -1873,6 +2021,7 @@ function CreateURL(addr) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "defaultDataSourceOptions": () => (/* binding */ defaultDataSourceOptions),
 /* harmony export */   "defaultQuery": () => (/* binding */ defaultQuery)
 /* harmony export */ });
 /* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @grafana/data */ "@grafana/data");
@@ -1891,6 +2040,11 @@ var defaultQuery = {
   keepdata: false,
   strict: true,
   dataGroupId: ''
+};
+var defaultDataSourceOptions = {
+  dataHistoryCapacity: 2000,
+  defaultUrl: '',
+  defaultHeaders: []
 };
 
 /***/ }),
@@ -4603,6 +4757,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui__;
 
 "use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE_emotion__;
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE_lodash__;
 
 /***/ }),
 

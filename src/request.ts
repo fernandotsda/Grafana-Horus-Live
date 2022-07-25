@@ -1,11 +1,22 @@
-import { HorusQuery } from './types';
+import { DataSourceInstanceSettings } from '@grafana/data';
+import { HorusDataSourceOptions, HorusQuery } from './types';
 
-export async function request(query: HorusQuery): Promise<any> {
+export async function request(
+  query: HorusQuery,
+  options: DataSourceInstanceSettings<HorusDataSourceOptions>
+): Promise<any> {
   // Add headers
   const headers = new Headers();
-  query.headers?.map((h) => {
-    headers.append(h[0], h[1]);
-  });
+
+  options.jsonData.defaultHeaders // Append default headers
+    ?.map((h) => {
+      headers.append(h[0], h[1]);
+    });
+
+  query.headers // Append query headers
+    ?.map((h) => {
+      headers.append(h[0], h[1]);
+    });
 
   // Request init
   const requestInit: RequestInit = {
@@ -14,7 +25,7 @@ export async function request(query: HorusQuery): Promise<any> {
     method: query.method,
   };
 
-  const url = CreateURL(query.urlPath);
+  const url = CreateURL(options.jsonData.defaultUrl + query.urlPath);
 
   if (!url) {
     throw new Error('Invalid URL');

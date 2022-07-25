@@ -23,7 +23,7 @@ export const PathEditor = ({ method, onMethodChange, path, onPathChange, onBlur 
         />
       </InlineField>
       <InlineField grow>
-        <Input placeholder="/orders/${orderId}" value={path} onBlur={onBlur} onChange={(e) => onPathChange(e.currentTarget.value)} />
+        <Input placeholder="/orders/${orderId}" spellCheck={false} value={path} onBlur={onBlur} onChange={(e) => onPathChange(e.currentTarget.value)} />
       </InlineField>
     </InlineFieldRow>
   );

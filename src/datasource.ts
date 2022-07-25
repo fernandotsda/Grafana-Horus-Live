@@ -17,12 +17,12 @@ import shortUUID from 'short-uuid';
 import { Newloop as NewLoop } from './looper';
 
 export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions> {
+  private dataController: DataController;
+
   constructor(instanceSettings: DataSourceInstanceSettings<HorusDataSourceOptions>) {
     super(instanceSettings);
-    this.dataController = new DataController();
+    this.dataController = new DataController(instanceSettings);
   }
-
-  private dataController: DataController;
 
   query(options: DataQueryRequest<HorusQuery>): Observable<DataQueryResponse> {
     const streams = options.targets.map((target) => {

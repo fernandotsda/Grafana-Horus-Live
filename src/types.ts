@@ -35,6 +35,14 @@ export const defaultQuery: Partial<HorusQuery> = {
   dataGroupId: '',
 };
 
+export const defaultDataSourceOptions: Partial<HorusDataSourceOptions> = {
+  dataHistoryCapacity: 2000,
+  defaultUrl: '',
+  defaultHeaders: [],
+};
+
 export interface HorusDataSourceOptions extends DataSourceJsonData {
-  queryParams?: string;
+  dataHistoryCapacity: number;
+  defaultUrl: string;
+  defaultHeaders?: Array<[string, string]>;
 }

@@ -3,6 +3,13 @@ import { JSONPath } from 'jsonpath-plus';
 import { parseValues } from './parseValues';
 import { HorusQuery, JsonField } from './types';
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Parse data according to the field type
+ * @param data The data to be parsed
+ * @param field The field with the conditions
+ * @returns The data parsed
+ */
 export function HandleDataForField(data: any, field: JsonField): any {
   let result: any;
   try {
@@ -19,6 +26,13 @@ export function HandleDataForField(data: any, field: JsonField): any {
   return result;
 }
 
+/**
+ * Add data to an especific field of an frame field
+ * @param frameFields The frame field
+ * @param data The data taht will be injected
+ * @param field The target
+ * @returns The framefields with the new data injected
+ */
 export function AddFrameField(frameFields: any, data: any, field: JsonField): Object {
   return {
     ...frameFields,
@@ -27,6 +41,12 @@ export function AddFrameField(frameFields: any, data: any, field: JsonField): Ob
   };
 }
 
+/**
+ * Add data to frame according to it's json fields
+ * @param frame Frame target
+ * @param query The current query
+ * @param rawData Raw data
+ */
 export function AddDataToQueryFrame(frame: CircularDataFrame<any>, query: HorusQuery, rawData: any) {
   let hasEmptyData = false;
   let frameFields = {};
