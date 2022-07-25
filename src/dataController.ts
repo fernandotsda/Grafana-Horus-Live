@@ -48,7 +48,7 @@ export class DataController {
   }
 
   /**
-   * Make the query request, if a request is pending will just wait the result of this one
+   * Make query request, if a request is pending will just wait the result
    * @param query The query
    * @returns
    */
