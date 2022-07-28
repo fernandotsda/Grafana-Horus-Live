@@ -1,11 +1,12 @@
 import { CircularDataFrame } from '@grafana/data';
 import { AddDataToQueryFrame } from './dataHandler';
+import { RequestResult } from './request';
 import { HorusQuery } from './types';
 
 export class DataHistory {
   readonly id: string;
   private capacity: number;
-  private data: any[] = [];
+  private data: RequestResult[] = [];
 
   constructor(id: string, capacity: number) {
     this.id = id;
@@ -35,7 +36,7 @@ export class DataHistory {
     // Inject the last values
     for (let i = startIndex; i < dataLenght; i++) {
       try {
-        AddDataToQueryFrame(frame, query, this.data[i]);
+        AddDataToQueryFrame(frame, query, this.data[i].data);
       } catch {} // Just skip fails
     }
   }

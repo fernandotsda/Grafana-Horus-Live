@@ -7,6 +7,7 @@ import { defaultQuery, HorusQuery ,Pair } from '../types';
 import { KeyValueEditor } from './KeyValueEditor';
 import { PathEditor } from './PathEditor';
 import { OptionsEditor } from './OptionsEditor';
+import shortUUID from 'short-uuid';
 
 interface Props {
   onChange: (query: HorusQuery) => void;
@@ -55,7 +56,10 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
   };
 
   const onKeepdataChange = (keepdata: boolean) => {
-    onChange({ ...q, keepdata });
+    let groupID: string = q.dataGroupId
+    if (!keepdata) {groupID = ""}
+    else if (q.dataGroupId.length === 0) {groupID = shortUUID.generate()}
+    onChange({ ...q, keepdata, dataGroupId: groupID });
     onRunQuery();
   };
 

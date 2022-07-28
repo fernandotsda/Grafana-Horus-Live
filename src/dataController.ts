@@ -1,6 +1,6 @@
 import { DataSourceInstanceSettings } from '@grafana/data';
 import { DataHistory } from './dataHistory';
-import { request } from './request';
+import { RequestResult, _request } from './request';
 import { HorusDataSourceOptions, HorusQuery } from './types';
 
 export class DataController {
@@ -21,21 +21,27 @@ export class DataController {
    * @param query The current query
    * @returns A DataHistory
    */
-  Get(query: HorusQuery): DataHistory {
+  GetDataHistory(query: HorusQuery): DataHistory | null {
+    console.log('.');
+    // Return null if keep data is disabled
+    if (query.keepdata === false) {
+      return null;
+    }
     const id = query.dataGroupId;
-    // Check if query id is empty
-    if (id === undefined || id.length === 0) {
-      throw new Error('Data history id cannot be empty');
+
+    // Find data history
+    let dataHistory = this.Find(id);
+
+    // Creates a new one if doesn't exists
+    if (dataHistory === null) {
+      dataHistory = new DataHistory(id, this.dataSourceOptions.jsonData.dataHistoryCapacity);
+
+      // Save data history for possible new queries
+      // of the same data group.
+      this.history.push(dataHistory);
     }
 
-    // Try to find query
-    let q = this.Find(id);
-    if (!q) {
-      q = new DataHistory(id, this.dataSourceOptions.jsonData.dataHistoryCapacity);
-      this.history.push(q);
-    }
-
-    return q;
+    return dataHistory;
   }
 
   /**
@@ -43,8 +49,8 @@ export class DataController {
    * @param id The DataHistory id
    * @returns The DataHistory, or undefined
    */
-  Find(id: string): DataHistory | undefined {
-    return this.history.find((h) => h.id === id);
+  Find(id: string): DataHistory | null {
+    return this.history.find((h) => h.id === id) ?? null;
   }
 
   /**
@@ -52,24 +58,25 @@ export class DataController {
    * @param query The query
    * @returns
    */
-  Request(query: HorusQuery): Promise<any> {
-    let r = this.dataRequests.find((r) => r.groupId === query.dataGroupId);
+  Request(query: HorusQuery): Promise<RequestResult> {
+    let dataRequest = this.dataRequests.find((r) => r.groupId === query.dataGroupId);
 
     // Check if is no request wrapper exist for this data group
-    if (r === undefined) {
-      r = {
+    if (dataRequest === undefined) {
+      dataRequest = {
         groupId: query.dataGroupId,
-        request: undefined,
+        result: undefined,
       };
-      this.dataRequests.push(r);
+      this.dataRequests.push(dataRequest);
     }
 
     // Make request if there's no request pending
-    if (r.request === undefined) {
-      r.request = request(query, this.dataSourceOptions);
+    if (dataRequest.result === undefined) {
+      dataRequest.result = _request(query, this.dataSourceOptions);
+      this.SaveResponse(dataRequest); // Save response in data history
     }
 
-    return r.request;
+    return dataRequest.result;
   }
 
   /**
@@ -82,11 +89,35 @@ export class DataController {
       throw new Error('Cannot clear a data request of a data group that does not exist');
     }
     // Clear it
-    r.request = undefined;
+    r.result = undefined;
+  }
+
+  /**
+   * Save response on Data history.
+   * If Data history is null, will do
+   * nothing.
+   * @param req The query request
+   */
+  private async SaveResponse(req: QueryDataGroupRequest): Promise<void> {
+    // Get data history
+    const dataHistory = this.Find(req.groupId);
+
+    // Just return if there's no data history
+    if (dataHistory === null) {
+      return;
+    }
+
+    // Wait for response
+    const res = await req.result;
+
+    // Push new data if is valid
+    if (res !== undefined && res.data !== undefined && res.error === null) {
+      dataHistory.Push(res);
+    }
   }
 }
 
 interface QueryDataGroupRequest {
   groupId: string;
-  request: Promise<any> | undefined;
+  result: Promise<RequestResult> | undefined;
 }

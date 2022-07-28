@@ -41,7 +41,7 @@ export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdata
       </InlineSwitch>
     </InlineFieldRow>
     <InlineFieldRow>
-    <InlineField  label="Group ID" tooltip="If more than one query use the same route to get the same response, the Group ID can be used to share the result, it also share the same data history internaly. But if the query result is unic for the query, leave it empty. Be aware that this function can cause bugs if the multiple querys are not configurate the same ways ('Fields' tab does not have effects).,">
+    <InlineField  disabled={!keepdata} label="Group ID">
       <Input width={15} onBlur={onGroupIDBlur} placeholder={groupID} value={groupID} onChange={(e) => onGroupIDChange(e.currentTarget.value)} />
       </InlineField>
     </InlineFieldRow>

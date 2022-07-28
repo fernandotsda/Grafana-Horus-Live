@@ -1,31 +1,15 @@
 import { sleep } from './dataHandler';
-
-const curloops: Loop[] = [];
+import { TeardownLogic } from 'rxjs';
 
 /**
- * Creates a new async function loop, the function
+ * When intanciated, creates a new async function, the function
  * will be called after the preview call and the
- * timeout finished
- * @param fn The function that will be executed
- * @param interval The inteval between each call
- * @returns The function to stop de loop
+ * timeout finished.
  */
-export function Newloop(fn: () => Promise<any>, interval: number): () => void {
-  // Create loop
-  const loop = new Loop(fn, interval);
-
-  // Save loop
-  curloops.push(loop);
-
-  // Return the cancel loop function
-  return () => (loop.stop = true);
-}
-
-class Loop {
+export class Loop {
   private _fn: () => Promise<any>;
   private _interval: number;
-
-  stop: boolean;
+  private stop: boolean;
 
   constructor(fn: () => Promise<any>, interval: number) {
     this._fn = fn;
@@ -41,5 +25,11 @@ class Loop {
       await this._fn();
       await sleep(this._interval);
     }
+  }
+
+  get TeardownLogic(): TeardownLogic {
+    return () => {
+      this.stop = true;
+    };
   }
 }

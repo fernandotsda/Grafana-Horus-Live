@@ -13,8 +13,8 @@ import { HorusQuery, HorusDataSourceOptions, defaultQuery } from './types';
 import { QueryResponseHandler } from './queryResponse';
 import { DataController } from './dataController';
 import { AddDataToQueryFrame } from './dataHandler';
-import shortUUID from 'short-uuid';
-import { Newloop as NewLoop } from './looper';
+import { Loop } from './looper';
+import { RequestResult } from './request';
 
 export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions> {
   private dataController: DataController;
@@ -29,16 +29,16 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
       // Get query
       const query = defaults(target, defaultQuery);
 
-      // Create unic groupID
-      if (query.dataGroupId.length === 0) {
-        query.dataGroupId = shortUUID.generate().toString();
-      }
-
-      // Get data history
-      const dataHistory = this.dataController.Get(query);
-
       // Inicialize and return Observable
       return new Observable<DataQueryResponse>((subscriber) => {
+        // Validate data group id
+        if (query.dataGroupId.length === 0 && query.keepdata === true) {
+          subscriber.error(new Error('Keep data is enabled but data group id is empty. Please set an new unique id.'));
+        }
+
+        // Get data history
+        const dataHistory = this.dataController.GetDataHistory(query);
+
         // Inicialize frame
         const frame = new CircularDataFrame({
           append: 'tail',
@@ -59,46 +59,54 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
         });
 
         // Inject data to frame
-        if (query.keepdata) {
+        if (query.keepdata && dataHistory !== null) {
           dataHistory.InjectTo(frame, query);
         }
 
-        const func = async () => {
-          let res: any;
-          let error = false;
+        // Request error count
+        let requestErrCount = 0;
 
-          // Make fetch
+        const func = async () => {
+          let res: RequestResult | undefined;
+          let fatalErr = false;
           try {
             // Wait and clone response
             res = clone(await this.dataController.Request(query));
-          } catch (e) {
+
+            if (res.error !== null) {
+              requestErrCount++;
+              // Check if errCount has reached the limit
+              if (requestErrCount >= 10) {
+                subscriber.error(res.error);
+              }
+            }
+          } catch (e) /* Catch fatal errors */ {
+            fatalErr = true;
             subscriber.error(e);
-            error = true;
           } finally {
             // Clear request
             this.dataController.ClearRequest(query);
-            if (error) {
+
+            // Return if anything went wrong
+            if (fatalErr === true || res === undefined || res.error !== null) {
               return;
             }
           }
 
           // Add data to frame
           try {
-            AddDataToQueryFrame(frame, query, res);
+            AddDataToQueryFrame(frame, query, res.data);
           } catch (e) {
             subscriber.error(e);
-          }
-
-          // Add data to history
-          if (query.keepdata) {
-            dataHistory.Push(res);
           }
 
           // Call next handler
           subscriber.next(queryRes.State(LoadingState.Streaming));
         };
 
-        return NewLoop(func, query.interval);
+        // Start loop
+        const loop = new Loop(func, query.interval);
+        return loop.TeardownLogic;
       });
     });
 

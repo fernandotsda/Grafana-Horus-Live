@@ -1,10 +1,15 @@
 import { DataSourceInstanceSettings } from '@grafana/data';
 import { HorusDataSourceOptions, HorusQuery } from './types';
 
-export async function request(
+export interface RequestResult {
+  error: Error | null;
+  data: any;
+}
+
+export async function _request(
   query: HorusQuery,
   options: DataSourceInstanceSettings<HorusDataSourceOptions>
-): Promise<any> {
+): Promise<RequestResult> {
   // Add headers
   const headers = new Headers();
 
@@ -37,19 +42,23 @@ export async function request(
   });
 
   // Make request
-  const res = await fetch(url.toString(), requestInit).catch(() => {
-    throw new Error('Fail to fetch');
-  });
+  const res = await fetch(url.toString(), requestInit);
 
   // Check if request has error code
   if (!res.ok) {
-    throw new Error('Request failed. ' + res.statusText);
+    return {
+      data: null,
+      error: new Error('Request has failed'),
+    };
   }
 
   // Parse response
-  return await res.json().catch(() => {
-    throw new Error('Fail to read response');
-  });
+  return {
+    data: await res.json().catch(() => {
+      throw new Error('Fail to read response as json');
+    }),
+    error: null,
+  };
 }
 
 function CreateURL(addr: string): URL | undefined {
