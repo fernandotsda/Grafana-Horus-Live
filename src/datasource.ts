@@ -79,7 +79,9 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
               if (requestErrCount >= 10) {
                 subscriber.error(res.error);
               }
-            }
+            } else {
+              requestErrCount = 0;
+            } // Reset count
           } catch (e) /* Catch fatal errors */ {
             fatalErr = true;
             subscriber.error(e);
