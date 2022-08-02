@@ -42,7 +42,7 @@ export const OptionsEditor = ({ interval, onIntervalChange, keepdata, onKeepdata
     </InlineFieldRow>
     <InlineFieldRow>
     <InlineField  disabled={!keepdata} label="Group ID">
-      <Input width={15} onBlur={onGroupIDBlur} placeholder={groupID} value={groupID} onChange={(e) => onGroupIDChange(e.currentTarget.value)} />
+      <Input width={30} onBlur={onGroupIDBlur} placeholder={groupID} value={groupID} onChange={(e) => onGroupIDChange(e.currentTarget.value)} />
       </InlineField>
     </InlineFieldRow>
   </>
