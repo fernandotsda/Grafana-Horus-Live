@@ -6,21 +6,33 @@ export interface JsonField {
   type?: FieldType;
 }
 
+export interface HorusTemplate {
+  TEMPLATE_NAME: string;
+  TEMPLATE_TYPE: string;
+  INTERVAL?: string;
+}
+
 export type Pair<T, K> = [T, K];
 
 export interface HorusQuery extends DataQuery {
   fields: JsonField[];
   interval: number;
+
   method: string;
   urlPath: string;
   queryParams: string;
   params: Array<Pair<string, string>>;
   headers: Array<Pair<string, string>>;
   body: string;
+
   keepdata: boolean;
   dataGroupId: string;
   strict: boolean;
   capacity: number;
+
+  useHorusTemplateBody: boolean;
+  useTimeRangeAsInterval: boolean;
+  horusTemplate: HorusTemplate;
 }
 
 export const defaultQuery: Partial<HorusQuery> = {
@@ -33,6 +45,12 @@ export const defaultQuery: Partial<HorusQuery> = {
   keepdata: false,
   strict: true,
   dataGroupId: '',
+  useHorusTemplateBody: false,
+  useTimeRangeAsInterval: false,
+  horusTemplate: {
+    TEMPLATE_TYPE: 'datalogger',
+    TEMPLATE_NAME: '',
+  },
 };
 
 export const defaultDataSourceOptions: Partial<HorusDataSourceOptions> = {

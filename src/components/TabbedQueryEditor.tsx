@@ -1,13 +1,14 @@
 import { TimeRange } from '@grafana/data';
-import { CodeEditor, InlineField, InlineFieldRow, RadioButtonGroup } from '@grafana/ui';
+import { InlineField, InlineFieldRow, RadioButtonGroup } from '@grafana/ui';
 import { DataSource } from 'datasource';
 import defaults from 'lodash/defaults';
 import React, { useState } from 'react';
-import { defaultQuery, HorusQuery ,Pair } from '../types';
+import { defaultQuery, HorusQuery, Pair } from '../types';
 import { KeyValueEditor } from './KeyValueEditor';
 import { PathEditor } from './PathEditor';
 import { OptionsEditor } from './OptionsEditor';
 import shortUUID from 'short-uuid';
+import { BodyEditor } from './BodyEditor';
 
 interface Props {
   onChange: (query: HorusQuery) => void;
@@ -22,7 +23,6 @@ interface Props {
 }
 
 export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Props) => {
-  const [bodyType, setBodyType] = useState('json');
   const [tabIndex, setTabIndex] = useState(0);
 
   const q = defaults(query, defaultQuery);
@@ -39,14 +39,18 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
 
   const onIntervalChange = (interval: number) => {
     // Check if is NaN
-    if (isNaN(interval)) {return;} 
+    if (isNaN(interval)) {
+      return;
+    }
 
     onChange({ ...q, interval });
   };
 
   const onCapacityChange = (capacity: number) => {
     // Check if is NaN
-    if (isNaN(capacity)) {return;} 
+    if (isNaN(capacity)) {
+      return;
+    }
 
     onChange({ ...q, capacity: capacity });
   };
@@ -56,9 +60,12 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
   };
 
   const onKeepdataChange = (keepdata: boolean) => {
-    let groupID: string = q.dataGroupId
-    if (!keepdata) {groupID = ""}
-    else if (q.dataGroupId.length === 0) {groupID = shortUUID.generate()}
+    let groupID: string = q.dataGroupId;
+    if (!keepdata) {
+      groupID = '';
+    } else if (q.dataGroupId.length === 0) {
+      groupID = shortUUID.generate();
+    }
     onChange({ ...q, keepdata, dataGroupId: groupID });
     onRunQuery();
   };
@@ -75,21 +82,44 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
 
   const onCapacityBlur = () => {
     if (q.capacity < 1) {
-      q.capacity = 1
-    } 
-    onRunQuery()
-  }
+      q.capacity = 1;
+    }
+    onRunQuery();
+  };
 
   const onGroupIDBlur = () => {
-    onRunQuery()
-  }
+    onRunQuery();
+  };
 
   const onIntervalBlur = () => {
     if (q.interval < 200) {
-      q.interval = 200
-    } 
-    onRunQuery()
-  }
+      q.interval = 200;
+    }
+    onRunQuery();
+  };
+
+  const onTemplateNameChange = (name: string) => {
+    onChange({
+      ...q,
+      horusTemplate: {
+        ...q.horusTemplate,
+        TEMPLATE_NAME: name,
+      },
+    });
+  };
+
+  const onTemplateTypeChange = (type: string) => {
+    onChange({ ...q, horusTemplate: { ...q.horusTemplate, TEMPLATE_TYPE: type } });
+  };
+
+  const onUseTimeRangeAsIntervalChange = (use: boolean) => {
+    onChange({ ...q, useTimeRangeAsInterval: use });
+    onRunQuery();
+  };
+
+  const onTemplateBlur = (): void => {
+    onRunQuery();
+  };
 
   const tabs = [
     {
@@ -98,21 +128,23 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     },
     {
       title: 'Options',
-      content: (<OptionsEditor 
-      groupID={q.dataGroupId}
-      onGroupIDBlur={onGroupIDBlur}
-      onGroupIDChange={onGroupIDChange}
-      capacity={q.capacity}
-      onCapacityChange={onCapacityChange}
-      interval={q.interval}
-      onIntervalChange={onIntervalChange} 
-      keepdata={q.keepdata}
-      onKeepdataChange={onKeepdataChange}
-      strict={q.strict}
-      onStrictChange={onStrictChange}
-      onCapacityBlur={onCapacityBlur}
-      onIntervalBlur={onIntervalBlur}
-      />)
+      content: (
+        <OptionsEditor
+          groupID={q.dataGroupId}
+          onGroupIDBlur={onGroupIDBlur}
+          onGroupIDChange={onGroupIDChange}
+          capacity={q.capacity}
+          onCapacityChange={onCapacityChange}
+          interval={q.interval}
+          onIntervalChange={onIntervalChange}
+          keepdata={q.keepdata}
+          onKeepdataChange={onKeepdataChange}
+          strict={q.strict}
+          onStrictChange={onStrictChange}
+          onCapacityBlur={onCapacityBlur}
+          onIntervalBlur={onIntervalBlur}
+        />
+      ),
     },
     {
       title: 'Path',
@@ -120,7 +152,7 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
         <PathEditor
           method={q.method ?? 'GET'}
           onBlur={() => {
-            onRunQuery()
+            onRunQuery();
           }}
           onMethodChange={(method) => {
             onChange({ ...q, method });
@@ -129,7 +161,7 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
           path={q.urlPath ?? ''}
           onPathChange={(path) => {
             if (path.length > 0 && path[0] !== '/') {
-              path = '/' + path
+              path = '/' + path;
             }
             onChange({ ...q, urlPath: path });
           }}
@@ -163,32 +195,19 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     {
       title: 'Body',
       content: (
-        <>
-          <InlineFieldRow>
-            <InlineField label="Syntax highlighting">
-              <RadioButtonGroup
-                value={bodyType}
-                onChange={(v) => setBodyType(v ?? 'json')}
-                options={[
-                  { label: 'Text', value: 'plaintext' },
-                  { label: 'JSON', value: 'json' },
-                  { label: 'XML', value: 'xml' },
-                ]}
-              />
-            </InlineField>
-          </InlineFieldRow>
-          <InlineFieldRow>
-            <CodeEditor
-                value={q.body || ''}
-                language={bodyType}
-                width="800px"
-                height="300px"
-                showMiniMap={false}
-                showLineNumbers={true}
-                onBlur={onBodyChange}
-            />
-          </InlineFieldRow>
-        </>
+        <BodyEditor
+          body={q.body}
+          templateName={q.horusTemplate.TEMPLATE_NAME}
+          templateType={q.horusTemplate.TEMPLATE_TYPE}
+          useHorusTemplateBody={query.useHorusTemplateBody}
+          useTimeRangeAsInterval={q.useTimeRangeAsInterval}
+          onBodyChange={onBodyChange}
+          onUseHorusTemplateBodyChange={(use: boolean) => onChange({ ...q, useHorusTemplateBody: use })}
+          onTemplateNameChange={onTemplateNameChange}
+          onTemplateTypeChange={onTemplateTypeChange}
+          onUseTimeRangeAsIntervalChange={onUseTimeRangeAsIntervalChange}
+          onTemplateBlur={() => onTemplateBlur()}
+        />
       ),
     },
   ];
@@ -200,7 +219,6 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
           <RadioButtonGroup
             onChange={(e) => setTabIndex(e ?? 0)}
             value={tabIndex}
-
             options={tabs.map((tab, idx) => ({ label: tab.title, value: idx }))}
           />
         </InlineField>

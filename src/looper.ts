@@ -14,9 +14,7 @@ export class Loop {
   constructor(fn: () => Promise<any>, interval: number) {
     this._fn = fn;
     this._interval = interval;
-
     this.stop = false;
-
     this.start();
   }
 
@@ -27,6 +25,9 @@ export class Loop {
     }
   }
 
+  /**
+   * TeardownLogic is used to stop the current loop
+   */
   get TeardownLogic(): TeardownLogic {
     return () => {
       this.stop = true;
