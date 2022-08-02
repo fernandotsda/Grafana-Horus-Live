@@ -49,6 +49,7 @@ export const BodyEditor = ({
               label="Use Time Range as Interval"
               showLabel={true}
               checked={useTimeRangeAsInterval}
+              defaultChecked={useTimeRangeAsInterval}
               onChange={(e) => onUseTimeRangeAsIntervalChange(e.currentTarget.checked)}
               onBlur={onBlur}
             ></InlineSwitch>
