@@ -22,7 +22,6 @@ export class DataController {
    * @returns A DataHistory
    */
   GetDataHistory(query: HorusQuery): DataHistory | null {
-    console.log('.');
     // Return null if keep data is disabled
     if (query.keepdata === false) {
       return null;
@@ -60,7 +59,6 @@ export class DataController {
    */
   Request(query: HorusQuery): Promise<RequestResult> {
     let dataRequest = this.dataRequests.find((r) => r.groupId === query.dataGroupId);
-
     // Check if is no request wrapper exist for this data group
     if (dataRequest === undefined) {
       dataRequest = {
