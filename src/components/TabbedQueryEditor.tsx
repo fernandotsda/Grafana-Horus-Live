@@ -75,6 +75,16 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     onRunQuery();
   };
 
+  const onUnoverridableChange = (unoverridable: boolean) => {
+    onChange({ ...q, unoverridable: unoverridable });
+    onRunQuery();
+  };
+
+  const onUseTemplateNameAsDataGroupIdChange = (useTemplateNameAsDataGroupId: boolean) => {
+    onChange({ ...q, useTemplateNameAsDataGroupId: useTemplateNameAsDataGroupId });
+    onRunQuery();
+  };
+
   const onHeadersChange = (headers: Array<Pair<string, string>>) => {
     onChange({ ...q, headers });
     onRunQuery();
@@ -101,15 +111,12 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
   const onTemplateNameChange = (name: string) => {
     onChange({
       ...q,
-      horusTemplate: {
-        ...q.horusTemplate,
-        TEMPLATE_NAME: name,
-      },
+      templateName: name,
     });
   };
 
   const onTemplateTypeChange = (type: string) => {
-    onChange({ ...q, horusTemplate: { ...q.horusTemplate, TEMPLATE_TYPE: type } });
+    onChange({ ...q, templateType: type });
   };
 
   const onUseTimeRangeAsIntervalChange = (use: boolean) => {
@@ -141,6 +148,10 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
           onKeepdataChange={onKeepdataChange}
           strict={q.strict}
           onStrictChange={onStrictChange}
+          useTemplateNameAsDataGroupId={q.useTemplateNameAsDataGroupId}
+          onUseTemplateNameAsDataGroupIdChange={onUseTemplateNameAsDataGroupIdChange}
+          unoverridable={q.unoverridable}
+          onUnoverridableChange={onUnoverridableChange}
           onCapacityBlur={onCapacityBlur}
           onIntervalBlur={onIntervalBlur}
         />
@@ -197,8 +208,8 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
       content: (
         <BodyEditor
           body={q.body}
-          templateName={q.horusTemplate.TEMPLATE_NAME}
-          templateType={q.horusTemplate.TEMPLATE_TYPE}
+          templateName={q.templateName}
+          templateType={q.templateType}
           useHorusTemplateBody={query.useHorusTemplateBody}
           useTimeRangeAsInterval={q.useTimeRangeAsInterval}
           onBodyChange={onBodyChange}

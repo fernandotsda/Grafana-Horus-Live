@@ -15,8 +15,9 @@ import { DataController } from './dataController';
 import { AddDataToQueryFrame } from './dataHandler';
 import { Loop } from './looper';
 import { RequestResult } from './request';
-import { GetCurrentTemplateInterval } from './templateInterval';
 import shortUUID from 'short-uuid';
+import { SetBodyAsHorusTemplate } from './horusTemplate';
+import { OverrideQueryWithVariables } from './variableHandler';
 
 export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions> {
   private dataController: DataController;
@@ -31,21 +32,32 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
       // Get query
       const query = defaults(target, defaultQuery);
 
-      // Horus Template Body
-      if (query.useHorusTemplateBody) {
-        if (query.useTimeRangeAsInterval) {
-          query.horusTemplate.INTERVAL = GetCurrentTemplateInterval(options);
-        }
-        query.body = JSON.stringify(query.horusTemplate);
-      }
-
-      // Create new dataGroupId if empty
-      if (query.dataGroupId.length === 0) {
-        query.dataGroupId = shortUUID.generate();
-      }
-
       // Inicialize and return Observable
       return new Observable<DataQueryResponse>((subscriber) => {
+        // Override query fields with dashboard variables
+        if (!query.unoverridable) {
+          try {
+            OverrideQueryWithVariables(query);
+          } catch (e) {
+            subscriber.error(e);
+          }
+        }
+
+        // Use template name as DataGroupId
+        if (query.useTemplateNameAsDataGroupId) {
+          query.dataGroupId = query.templateName;
+        }
+
+        // Create new dataGroupId if empty
+        if (query.dataGroupId.length === 0) {
+          query.dataGroupId = shortUUID.generate();
+        }
+
+        // Use horus template
+        if (query.useHorusTemplateBody) {
+          SetBodyAsHorusTemplate(query, options);
+        }
+
         // Get data history
         const dataHistory = this.dataController.GetDataHistory(query);
 
