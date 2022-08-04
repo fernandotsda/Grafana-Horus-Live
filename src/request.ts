@@ -6,6 +6,15 @@ export interface RequestResult {
   data: any;
 }
 
+/**
+ * Make request.
+ * If URL is invalid Throws an Error
+ * If the reponse was not json or was an invalid json Throws an Error
+ *
+ * @param query The query
+ * @param options The DataSourceInstanceOptions
+ * @returns The request result
+ */
 export async function _request(
   query: HorusQuery,
   options: DataSourceInstanceSettings<HorusDataSourceOptions>

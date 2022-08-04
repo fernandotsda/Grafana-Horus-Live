@@ -1,6 +1,12 @@
 import { FieldType } from '@grafana/data';
 import dayjs from 'dayjs';
 
+/**
+ * Parse filds values according to it's type
+ * @param values The JSONPath values
+ * @param type The field type
+ * @returns The parsed values
+ */
 export const parseValues = (values: any[], type: FieldType): any[] => {
   switch (type) {
     case FieldType.time:

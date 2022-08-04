@@ -2,7 +2,7 @@ import { sleep } from './dataHandler';
 import { TeardownLogic } from 'rxjs';
 
 /**
- * When intanciated, creates a new async function, the function
+ * When instanciated, creates a new async function, the function
  * will be called after the preview call and the
  * timeout finished.
  */
