@@ -15,7 +15,7 @@ Horus Live is a streaming plugin for data visualization.
 | Options | Strict                       | Allows only non empty field's values                                                                                           |
 | Options | Unoverridable                | Prevent query from beeing overrided from dashboard variables                                                                   |
 | Options | Use Template Name as GroupID | Uses the template name (body section) value as the query Group ID                                                              |
-| Options | Group ID                     | Data Group identification, check the 'Explaining Data Group Control' section to more details                                   |
+| Options | Group ID                     | Data Group identification, check the 'Explaining Data Group Control' section for more details                                  |
 | Path    | 'Method Selection'           | The request METHOD, only support 'GET' or 'PORT'                                                                               |
 | Path    | 'Path text area'             | The path complementation for the Data Source's URL                                                                             |
 | Params  | 'Params' (Key:Value)         | URL params                                                                                                                     |
