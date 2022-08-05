@@ -19,7 +19,7 @@ export class DataController {
    * Try to find an existent DataHistory, if doesn't exist, creates
    * a new one.
    * @param query The current query
-   * @returns A DataHistory
+   * @returns DataHistory
    */
   GetDataHistory(query: HorusQuery): DataHistory | null {
     // Return null if keep data is disabled
@@ -44,7 +44,7 @@ export class DataController {
   }
 
   /**
-   * Find a DataHistory
+   * Find DataHistory
    * @param id The DataHistory id
    * @returns The DataHistory, or undefined
    */
