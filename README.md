@@ -46,7 +46,7 @@ Override all queries (excepted for the unoverridable ones) configuration with th
 | templateName                 | Body > Template Name                    | Any text          |
 | templateType                 | Body > Template Type                    | Any text          |
 
-## Explaning Data Group Control
+## Explaining Data Group Control
 
 Data Group Control is used to treat multiple queries as a single one when requesting, just by simply setting the same Data Group ID in their query options. This mean that they will share all their request response and they will
 only make another request if no other one from other query is pending. Also, when another query is created (or a existing one is restarted), the old data from others queries
