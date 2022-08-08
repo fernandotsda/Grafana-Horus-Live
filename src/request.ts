@@ -2,7 +2,13 @@ import { DataSourceInstanceSettings } from '@grafana/data';
 import { HorusDataSourceOptions, HorusQuery } from './types';
 
 export interface RequestResult {
+  /**
+   * Fetch error
+   */
   error: Error | null;
+  /**
+   * Request data
+   */
   data: any;
 }
 

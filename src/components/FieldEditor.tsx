@@ -8,14 +8,14 @@ interface Props {
   limit?: number;
   onChange: (value: JsonField[]) => void;
   value: JsonField[];
-  onBlur: () => void
+  onBlur: () => void;
 }
 
 export const FieldEditor = ({ value = [], onChange, limit, onBlur }: Props) => {
   const onChangePath = (i: number) => (e: string) => {
     onChange(value.map((field, n) => (i === n ? { ...value[i], jsonPath: e } : field)));
   };
- 
+
   const onNameChange = (i: number) => (e: any) => {
     onChange(value.map((field, n) => (i === n ? { ...value[i], name: e.currentTarget.value } : field)));
   };
@@ -51,11 +51,7 @@ export const FieldEditor = ({ value = [], onChange, limit, onBlur }: Props) => {
             }
             grow
           >
-            <JsonPathQueryField
-              onBlur={onBlur}
-              onChange={onChangePath(index)}
-              query={field.jsonPath}
-            />
+            <JsonPathQueryField onBlur={onBlur} onChange={onChangePath(index)} query={field.jsonPath} />
           </InlineField>
           <InlineField label="Type">
             <Select
