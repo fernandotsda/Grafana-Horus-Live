@@ -1,0 +1,41 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "private",
+  "signedByOrg": "tsdadev",
+  "signedByOrgName": "tsdadev",
+  "rootUrls": [
+    "http://localhost:3000/"
+  ],
+  "plugin": "tsdadev-horuslive-datasource",
+  "version": "1.0.1",
+  "time": 1660067039682,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "certutil": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "CHANGELOG.md": "aaa78be4710ef41d56ddab1edbd180ef9f9adfea2f293109aae925dc33a1b9b3",
+    "img/logo.png": "814c93a4426950d52e4802200794e781badef6ee8a0cea73d55d38efe5695d14",
+    "img/logo.svg": "1defc6f7e585c67657bcfd8fddc599ee7dfa82f8674413f49fa274c2cd453ec6",
+    "img/ServerIcon.png": "814c93a4426950d52e4802200794e781badef6ee8a0cea73d55d38efe5695d14",
+    "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "module.js": "da92e60269c73aad99ca81f20d609ec63243aa88b944a6834200613961810667",
+    "module.js.LICENSE.txt": "cdf963ced7d25a0f98901a547647b4d6e2dbe0197fd78c87a059a87b0e542fe2",
+    "module.js.map": "f5d7acf7d678a6a25d247ecfbd7e761e7da28e0db46fa71b4949e80dfa0e8cf3",
+    "plugin.json": "7e48bb719308fa63403030000362454abcd0042010089da6c992193448703b02",
+    "README.md": "fb17d263515fa4971f8ae889c64ba90566ec16c5c1ccc19b50d3ebeebff29c80"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.10
+Comment: https://openpgpjs.org
+
+wrcEARMKAAYFAmLynN8AIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm525TAgIDjnV3DmYrI8liyFt2diRdrcx0FBoKmbIFO0LbCr+AFwpTy6BH
+AYQw1buP/Gsn84cG6A2ntL13wZXITyGQz+jYhAII//1r51ZC7xjn/sy7tpr8
+CQ5tKuBXLkWtUDQGAQWuz6oa7k0Lkme15HAxpQEKyKYj/1QsVB/uMatsmZjL
+pl3Ymq4=
+=bGjA
+-----END PGP SIGNATURE-----
