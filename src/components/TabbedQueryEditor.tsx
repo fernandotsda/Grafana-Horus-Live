@@ -55,6 +55,15 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
     onChange({ ...q, capacity: capacity });
   };
 
+  const onMaxFailsChange = (maxFails: number) => {
+    // Check if is NaN
+    if (isNaN(maxFails)) {
+      return;
+    }
+
+    onChange({ ...q, maxFails: maxFails });
+  };
+
   const onGroupIDChange = (groupID: string) => {
     onChange({ ...q, dataGroupId: groupID });
   };
@@ -72,6 +81,11 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
 
   const onStrictChange = (strict: boolean) => {
     onChange({ ...q, strict: strict });
+    onRunQuery();
+  };
+
+  const onFastStartChange = (fastStart: boolean) => {
+    onChange({ ...q, fastStart: fastStart });
     onRunQuery();
   };
 
@@ -93,6 +107,13 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
   const onCapacityBlur = () => {
     if (q.capacity < 1) {
       q.capacity = 1;
+    }
+    onRunQuery();
+  };
+
+  const onMaxFailsBlur = () => {
+    if (q.maxFails < 0) {
+      q.maxFails = 0;
     }
     onRunQuery();
   };
@@ -142,17 +163,22 @@ export const TabbedQueryEditor = ({ query, onChange, onRunQuery, fieldsTab }: Pr
           onGroupIDChange={onGroupIDChange}
           capacity={q.capacity}
           onCapacityChange={onCapacityChange}
+          maxFails={q.maxFails}
+          onMaxFailsChange={onMaxFailsChange}
           interval={q.interval}
           onIntervalChange={onIntervalChange}
           keepdata={q.keepdata}
           onKeepdataChange={onKeepdataChange}
           strict={q.strict}
           onStrictChange={onStrictChange}
+          fastStart={q.fastStart}
+          onFastStartChange={onFastStartChange}
           useTemplateNameAsDataGroupId={q.useTemplateNameAsDataGroupId}
           onUseTemplateNameAsDataGroupIdChange={onUseTemplateNameAsDataGroupIdChange}
           unoverridable={q.unoverridable}
           onUnoverridableChange={onUnoverridableChange}
           onCapacityBlur={onCapacityBlur}
+          onMaxFailsBlur={onMaxFailsBlur}
           onIntervalBlur={onIntervalBlur}
         />
       ),

@@ -33,6 +33,9 @@ export interface HorusQuery extends DataQuery {
   templateInterval?: string;
 
   unoverridable: boolean;
+
+  maxFails: number;
+  fastStart: boolean;
 }
 
 export const defaultQuery: Partial<HorusQuery> = {
@@ -51,6 +54,8 @@ export const defaultQuery: Partial<HorusQuery> = {
   templateName: '',
   unoverridable: false,
   useTemplateNameAsDataGroupId: false,
+  maxFails: 0,
+  fastStart: true,
 };
 
 export const defaultDataSourceOptions: Partial<HorusDataSourceOptions> = {

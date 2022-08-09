@@ -77,7 +77,7 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
         const queryRes = new QueryResponseHandler({
           data: [frame],
           key: query.refId,
-          state: LoadingState.NotStarted,
+          state: LoadingState.Loading,
         });
 
         // Inject data to frame
@@ -98,7 +98,7 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
             if (res.error !== null) {
               requestErrCount++;
               // Check if errCount has reached the limit
-              if (requestErrCount >= 10) {
+              if (requestErrCount > query.maxFails) {
                 subscriber.error(res.error);
               }
             } else {
@@ -130,6 +130,12 @@ export class DataSource extends DataSourceApi<HorusQuery, HorusDataSourceOptions
 
         // Start loop
         const loop = new Loop(func, query.interval);
+
+        // Fast start
+        if (query.fastStart) {
+          subscriber.next(queryRes.State(LoadingState.Streaming));
+        }
+
         return loop.TeardownLogic;
       });
     });
