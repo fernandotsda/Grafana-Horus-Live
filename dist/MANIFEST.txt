@@ -12,7 +12,7 @@ Hash: SHA512
   ],
   "plugin": "tsdadev-horuslive-datasource",
   "version": "1.0.1",
-  "time": 1660067429442,
+  "time": 1660068032757,
   "keyId": "7e4d0c6a708866e7",
   "files": {
     "certutil": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -21,9 +21,9 @@ Hash: SHA512
     "img/logo.svg": "1defc6f7e585c67657bcfd8fddc599ee7dfa82f8674413f49fa274c2cd453ec6",
     "img/ServerIcon.png": "814c93a4426950d52e4802200794e781badef6ee8a0cea73d55d38efe5695d14",
     "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
-    "module.js": "da92e60269c73aad99ca81f20d609ec63243aa88b944a6834200613961810667",
+    "module.js": "a8481fc9a5568198da01061ae5af3d8b120aa5c487c5f0d61d5d39231504d170",
     "module.js.LICENSE.txt": "cdf963ced7d25a0f98901a547647b4d6e2dbe0197fd78c87a059a87b0e542fe2",
-    "module.js.map": "f5d7acf7d678a6a25d247ecfbd7e761e7da28e0db46fa71b4949e80dfa0e8cf3",
+    "module.js.map": "2710d9abe7a0292323c4067e8f25b511d809f05a6348e0491260b96ea59a982f",
     "plugin.json": "7e48bb719308fa63403030000362454abcd0042010089da6c992193448703b02",
     "README.md": "fb17d263515fa4971f8ae889c64ba90566ec16c5c1ccc19b50d3ebeebff29c80"
   }
@@ -32,10 +32,10 @@ Hash: SHA512
 Version: OpenPGP.js v4.10.10
 Comment: https://openpgpjs.org
 
-wrgEARMKAAYFAmLynmUAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
-cIhm5yW3AgkB8AxSkcIO2zKCdkkoM5uhszKqi0AguGIqfoOIqjCr0yrh5dls
-6F9aSi2qHJJGW7bodtKq2UODz1uRMEZ0XJCF7BACB1a/vXsCk90c+6VRDYsd
-qAeKxgg11iTLu33UlpNu0xBQ5Gu6+bApK3Z2KJvpnEfGFec9S43ZSzWW224s
-oLiaOGZO
-=lfpv
+wrgEARMKAAYFAmLyoMAAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm5yUvAgQKL3erhRw8YGYmokLpLLLD0giuE0Hehz4rnQZhtkjQ/v/oUSxt
+NZImCmOkKS6+WODyxkxwMpZUMZLa9MQmIbZEFwIJAb4D6OBq3FQgM3AoJQ7E
+AsJQ2wsawmbkk8fX4Vwp79HEjn3MIHKZ3JILR/k/N68zWY/anfRaju28I2Da
+MHOk8gzu
+=ijMm
 -----END PGP SIGNATURE-----
