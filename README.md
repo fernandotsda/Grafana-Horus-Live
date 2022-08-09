@@ -11,11 +11,13 @@ Horus Live is a streaming plugin for data visualization.
 | Fields  | Name                         | The field name to be displayed on panel                                                                                        |
 | Options | Interval                     | Interval between each request (starts counting after the end of the previous request )                                         |
 | Options | Capacity                     | Number of frames that the query can hold                                                                                       |
+| Options | Max Fails                    | Maximum number attempts to request until show error and stop streaming                                                         |
+| Options | Group ID                     | Data Group identification, check the 'Explaining Data Group Control' section for more details                                  |
 | Options | KeepData                     | Every valid request response is saved internally, and reaplied on the query restart and for all queries of that GroupID        |
 | Options | Strict                       | Allows only non empty field's values                                                                                           |
+| Options | Fast Start                   | Start in mode 'streaming' instead of 'loading'                                                                                 |
 | Options | Unoverridable                | Prevent query from beeing overrided from dashboard variables                                                                   |
 | Options | Use Template Name as GroupID | Uses the template name (body section) value as the query Group ID                                                              |
-| Options | Group ID                     | Data Group identification, check the 'Explaining Data Group Control' section for more details                                  |
 | Path    | 'Method Selection'           | The request METHOD, only support 'GET' or 'PORT'                                                                               |
 | Path    | 'Path text area'             | The path complementation for the Data Source's URL                                                                             |
 | Params  | 'Params' (Key:Value)         | URL params                                                                                                                     |
@@ -36,8 +38,10 @@ Override all queries (excepted for the unoverridable ones) configuration with th
 | capacity                     | Options > Capacity                      | Number            |
 | keepData                     | Options > KeepData                      | 'true' or 'false' |
 | strict                       | Options > Strict                        | 'true' or 'false' |
+| fastStart                    | Options > Fast Start                    | 'true' or 'false' |
 | useTemplateNameAsDataGroupId | Options > Use Template Name as Group ID | 'true' or 'false' |
 | groupId                      | Options > Group ID                      | Any text          |
+| maxFails                     | Options > Max Fails                     | Number            |
 | method                       | Path > 'Method Selection'               | 'POST' or 'GET'   |
 | urlPath                      | Path > 'Path text area'                 | Any text          |
 | body                         | Body > 'Raw body text area'             | JSON string       |
