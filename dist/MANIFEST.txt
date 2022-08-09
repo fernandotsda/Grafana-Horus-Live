@@ -12,7 +12,7 @@ Hash: SHA512
   ],
   "plugin": "tsdadev-horuslive-datasource",
   "version": "1.0.1",
-  "time": 1660067039682,
+  "time": 1660067429442,
   "keyId": "7e4d0c6a708866e7",
   "files": {
     "certutil": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -32,10 +32,10 @@ Hash: SHA512
 Version: OpenPGP.js v4.10.10
 Comment: https://openpgpjs.org
 
-wrcEARMKAAYFAmLynN8AIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
-cIhm525TAgIDjnV3DmYrI8liyFt2diRdrcx0FBoKmbIFO0LbCr+AFwpTy6BH
-AYQw1buP/Gsn84cG6A2ntL13wZXITyGQz+jYhAII//1r51ZC7xjn/sy7tpr8
-CQ5tKuBXLkWtUDQGAQWuz6oa7k0Lkme15HAxpQEKyKYj/1QsVB/uMatsmZjL
-pl3Ymq4=
-=bGjA
+wrgEARMKAAYFAmLynmUAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm5yW3AgkB8AxSkcIO2zKCdkkoM5uhszKqi0AguGIqfoOIqjCr0yrh5dls
+6F9aSi2qHJJGW7bodtKq2UODz1uRMEZ0XJCF7BACB1a/vXsCk90c+6VRDYsd
+qAeKxgg11iTLu33UlpNu0xBQ5Gu6+bApK3Z2KJvpnEfGFec9S43ZSzWW224s
+oLiaOGZO
+=lfpv
 -----END PGP SIGNATURE-----
