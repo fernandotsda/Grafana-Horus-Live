@@ -55,7 +55,7 @@ export const defaultQuery: Partial<HorusQuery> = {
   unoverridable: false,
   useTemplateNameAsDataGroupId: false,
   maxFails: 0,
-  fastStart: true,
+  fastStart: false,
 };
 
 export const defaultDataSourceOptions: Partial<HorusDataSourceOptions> = {
