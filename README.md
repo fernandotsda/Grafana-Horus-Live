@@ -1,5 +1,9 @@
 # Horus Live
 
+[![GitHub Project](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)][1]
+
+[1]: https://github.com/fernandotsda/Grafana-Horus-Live
+
 Horus Live is a streaming plugin for data visualization.
 
 ## Query Fields
@@ -11,7 +15,7 @@ Horus Live is a streaming plugin for data visualization.
 | Fields  | Name                         | The field name to be displayed on panel                                                                                        |
 | Options | Interval                     | Interval between each request (starts counting after the end of the previous request )                                         |
 | Options | Capacity                     | Number of frames that the query can hold                                                                                       |
-| Options | Max Fails                    | Maximum number of requests attempts until show error and stop streaming                                                         |
+| Options | Max Fails                    | Maximum number of requests attempts until show error and stop streaming                                                        |
 | Options | Group ID                     | Data Group identification, check the 'Explaining Data Group Control' section for more details                                  |
 | Options | KeepData                     | Every valid request response is saved internally, and reaplied on the query restart and for all queries of that GroupID        |
 | Options | Strict                       | Allows only non empty field's values                                                                                           |
