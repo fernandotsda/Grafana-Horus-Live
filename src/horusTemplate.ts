@@ -45,5 +45,5 @@ function GetCurrentTemplateInterval(options: DataQueryRequest<HorusQuery>): stri
  * @returns The two digit number as string
  */
 function twoDigit(n: number): string {
-  return n > 10 ? `${n}` : '0' + n;
+  return n >= 10 ? `${n}` : '0' + n;
 }
