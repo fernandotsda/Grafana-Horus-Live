@@ -32,7 +32,7 @@ Horus Live is a streaming plugin for data visualization.
 | Body    | Template Name                | The template name, value is used in the body field 'TEMPLATE_NAME'                                                             |
 | Body    | Template Type                | The template type, value is used in the body field 'TEMPLATE_TYPE'                                                             |
 
-## Dashboard supported variables
+## Dashboard supported constant variables
 
 Override all queries (excepted for the unoverridable ones) configuration with the variable value
 
