@@ -9,7 +9,7 @@ interface HorusTemplate {
 
 /**
  * Transform query template name, type and interval (if selected) into JSON string
- * and overwrite body with it
+ * and overwrite the body with it
  * @param query The query
  * @param options Dataquery options
  */
