@@ -9,6 +9,7 @@ import { HorusQuery } from './types';
  */
 export function OverrideQueryWithVariables(query: HorusQuery): void {
   const variables = getTemplateSrv().getVariables();
+
   variables.forEach((v) => {
     // Get variable name which will be used as query key
     const variableAsKey = v.name;
@@ -41,9 +42,7 @@ export function OverrideQueryWithVariables(query: HorusQuery): void {
         } else if (rawValue === 'false') {
           queryAsAny[variableAsKey] = false;
         } /*Invalid value*/ else {
-          throw new Error(
-            `Invalid variable (${variableAsKey}) value, received: ${rawValue}, expected: "true" or "false"`
-          );
+          return;
         }
       } else if (fieldType === 'number') {
         // Parse to number
@@ -51,18 +50,12 @@ export function OverrideQueryWithVariables(query: HorusQuery): void {
 
         // Validate value
         if (isNaN(valueAsNumber)) {
-          throw new Error(
-            `Invalid variable (${variableAsKey}) value, received: ${rawValue}, expected: value typeof number`
-          );
+          return;
         }
         queryAsAny[variableAsKey] = valueAsNumber;
-      } else {
-        // Throw error if field is unsupported
-        throw new Error(`Unsupported variable override: ${variableAsKey}`);
       }
-    } else {
-      // Throw error if key doesn't exist in query
-      throw new Error(`Unknown variable: ${variableAsKey}`);
+      return;
     }
+    return;
   });
 }
